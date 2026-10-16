@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>青城山团建 · 行程安排</title>
+<style>
+  :root {
+    --bg: #f6f4ee;
+    --card: #ffffff;
+    --ink: #2b2f2a;
+    --ink-soft: #6b7268;
+    --green-900: #143f2d;
+    --green-700: #1f5c41;
+    --green-500: #2f7d57;
+    --green-300: #7fae94;
+    --green-100: #e6efe9;
+    --amber: #c8943c;
+    --amber-soft: #f6ecd9;
+    --line: #e5e0d3;
+    --shadow: 0 10px 30px rgba(20, 63, 45, 0.08);
+    --radius: 18px;
+    --serif: "Songti SC", "Noto Serif SC", "STSong", Georgia, serif;
+    --sans: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- Header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 22px;
+    background: rgba(246, 244, 238, 0.85);
+    backdrop-filter: saturate(1.4) blur(12px);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--serif);
+    font-weight: 700;
+    letter-spacing: .5px;
+    color: var(--green-900);
+  }
+  .brand .dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--green-500), var(--amber));
+  }
+  .toggle-btn {
+    font-family: inherit;
+    font-size: 13px;
+    padding: 8px 16px;
+    border: 1px solid var(--green-300);
+    background: #fff;
+    color: var(--green-700);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: all .2s ease;
+  }
+  .toggle-btn:hover { background: var(--green-100); transform: translateY(-1px); }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    padding: 64px 22px 48px;
+    text-align: center;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: -40% -10% auto -10%;
+    height: 420px;
+    background:
+      radial-gradient(ellipse at 30% 60%, rgba(47,125,87,.14), transparent 60%),
+      radial-gradient(ellipse at 70% 40%, rgba(200,148,60,.12), transparent 55%);
+    pointer-events: none;
+  }
+  .hero .eyebrow {
+    position: relative;
+    display: inline-block;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--amber);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    position: relative;
+    font-family: var(--serif);
+    font-size: clamp(30px, 5vw, 44px);
+    color: var(--green-900);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+  .hero .sub {
+    position: relative;
+    color: var(--ink-soft);
+    font-size: 15px;
+  }
+  .hero .stats {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 26px;
+  }
+  .stat-chip {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 8px 18px;
+    font-size: 13px;
+    color: var(--green-700);
+    box-shadow: var(--shadow);
+  }
+  .stat-chip b { color: var(--green-900); font-weight: 700; }
+
+  /* ---------- Timeline ---------- */
+  .timeline {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 20px 90px;
+    position: relative;
+  }
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0; bottom: 0;
+    width: 2px;
+    transform: translateX(-50%);
+    background: linear-gradient(to bottom, transparent, var(--green-300) 8%, var(--green-300) 92%, transparent);
+  }
+
+  .day {
+    position: relative;
+    margin-bottom: 44px;
+  }
+  .day-node {
+    position: absolute;
+    left: 50%;
+    top: 38px;
+    transform: translateX(-50%);
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--green-500);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 0 0 6px var(--bg);
+    z-index: 2;
+  }
+
+  .day-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--line);
+    overflow: hidden;
+    transition: transform .25s ease, box-shadow .25s ease;
+  }
+  .day-card:hover { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(20,63,45,.12); }
+
+  .day-head {
+    padding: 22px 24px 18px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    border-bottom: 1px dashed var(--line);
+    cursor: pointer;
+    user-select: none;
+  }
+  .day-badge {
+    flex: none;
+    font-family: var(--serif);
+    font-size: 12px;
+    letter-spacing: 2px;
+    color: #fff;
+    background: linear-gradient(135deg, var(--green-700), var(--green-500));
+    border-radius: 10px;
+    padding: 7px 12px;
+    font-weight: 700;
+  }
+  .day-title { flex: 1; }
+  .day-title .date { font-weight: 700; font-size: 17px; color: var(--green-900); }
+  .day-title .week { font-size: 13px; color: var(--amber); font-weight: 600; margin-left: 6px; }
+  .day-title .desc { font-size: 13px; color: var(--ink-soft); margin-top: 2px; }
+  .day-head .chevron {
+    flex: none;
+    color: var(--green-300);
+    font-size: 18px;
+    transition: transform .25s ease;
+    margin-top: 4px;
+  }
+  .day[data-collapsed="true"] .chevron { transform: rotate(-90deg); }
+  .day[data-collapsed="true"] .acts { display: none; }
+
+  /* ---------- Activity list ---------- */
+  .acts { padding: 10px 0; }
+  .act {
+    border-bottom: 1px solid #f0ede4;
+  }
+  .act:last-child { border-bottom: none; }
+  .act-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 24px;
+    cursor: pointer;
+    transition: background .18s ease;
+  }
+  .act-row:hover { background: var(--green-100); }
+  .act-time {
+    flex: none;
+    min-width: 62px;
+    text-align: center;
+    background: var(--amber-soft);
+    color: #8a641f;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 8px;
+    padding: 5px 8px;
+    letter-spacing: .3px;
+  }
+  .act-main { flex: 1; }
+  .act-title {
+    font-size: 15.5px;
+    font-weight: 700;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .act-title .ic { font-size: 17px; }
+  .act-hint { font-size: 12.5px; color: var(--ink-soft); margin-top: 2px; }
+  .act-arrow {
+    flex: none;
+    color: var(--green-300);
+    transition: transform .25s ease;
+    margin-top: 4px;
+  }
+  .act[data-open="true"] .act-arrow { transform: rotate(180deg); }
+  .act[data-open="true"] .act-row { background: #faf9f4; }
+
+  .act-detail {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .35s cubic-bezier(.4,0,.2,1);
+  }
+  .act[data-open="true"] .act-detail { max-height: 1200px; }
+  .act-detail-inner {
+    padding: 2px 24px 18px 100px;
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+  .note-list { list-style: none; }
+  .note-list li {
+    position: relative;
+    padding-left: 18px;
+    margin-bottom: 7px;
+  }
+  .note-list li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: .6em;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green-300);
+  }
+  .note-list li.sub { padding-left: 34px; }
+  .note-list li.sub::before {
+    content: "→";
+    background: none;
+    width: auto; height: auto;
+    top: 0;
+    color: var(--amber);
+    font-weight: 700;
+  }
+  .note-list li .lbl {
+    color: var(--green-700);
+    font-weight: 600;
+  }
+  .note-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--green-700);
+    background: var(--green-100);
+    border-radius: 6px;
+    padding: 2px 8px;
+    margin-right: 6px;
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    text-align: center;
+    padding: 36px 20px 60px;
+    color: var(--ink-soft);
+    font-size: 12.5px;
+  }
+  footer .seal {
+    font-family: var(--serif);
+    color: var(--green-700);
+    font-size: 15px;
+    letter-spacing: 3px;
+  }
+
+  @media (max-width: 560px) {
+    .timeline::before { left: 24px; transform: none; }
+    .day-node { left: 24px; transform: translateX(-50%); }
+    .day { padding-left: 8px; }
+    .act-detail-inner { padding-left: 24px; }
+    .act-time { min-width: 54px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand"><span class="dot"></span>青城山团建 · 行程安排</div>
+  <button class="toggle-btn" id="toggleAll">全部展开</button>
+</header>
+
+<div class="hero">
+  <div class="eyebrow">Qingcheng Mountain · Team Trip</div>
+  <h1>青城山 · 团建行程</h1>
+  <div class="sub">4 天 3 晚 · 无花费计划 · 2025 年 11 月</div>
+  <div class="stats">
+    <span class="stat-chip"><b>4</b> 天行程</span>
+    <span class="stat-chip"><b>3</b> 晚住宿</span>
+    <span class="stat-chip">住宿：<b>青城山晚山私汤民宿</b></span>
+  </div>
+</div>
+
+<div class="timeline" id="timeline"></div>
+
+<footer>
+  <div class="seal">山 野 入 梦 · 青 城 相 约</div>
+  <div style="margin-top:6px">点击任意行程查看详情 · 点击日期收起/展开当天</div>
+</footer>
+
+<script>
+const DATA = [
+  {
+    day: "DAY 1", date: "11.05", week: "周四", desc: "抵达 · 入住",
+    icon: "🏨",
+    acts: [
+      {
+        time: "14:00 后", icon: "🛏️", title: "到达酒店入住", hint: "青城山晚山私汤民宿",
+        note: [
+          "名称：青城山晚山私汤民宿",
+          "地址：四川都江堰青城山镇青城社区青农街124号",
+          "酒店距青城山站 2.1km，距都江堰站 10km",
+          { lbl: "交通方案（从天府机场出发）", items: [
+            "地铁19号线 → 金星地铁站，再打车到民宿（30km，约￥50）※多人同行推荐",
+            "地铁19号线转6号线 → 犀浦站，再从犀浦站到青城山站（15分钟一班，约￥30）",
+            "地铁19号线 → 成都西站，再转青城山站（仅一班，14点多左右，约￥30）",
+            "动车 → 成都东站，再转到都江堰站（仅两班，13点多那趟合适，约￥30）"
+          ]}
+        ]
+      },
+      {
+        time: "18:00", icon: "🍽️", title: "晚餐", hint: "小门大院",
+        note: [
+          "酒店前台集合，打车或走路去餐厅（2.7km）",
+          "名称：小门大院",
+          "地址：东软大道七一学校正对面（近豪生酒店）"
+        ]
+      }
+    ]
+  },
+  {
+    day: "DAY 2", date: "11.06", week: "周五", desc: "青城后山 · 徒步",
+    icon: "🥾",
+    acts: [
+      { time: "08:30", icon: "🥣", title: "早餐", hint: "酒店餐厅集合", note: ["酒店餐厅集合"] },
+      { time: "09:20", icon: "🚕", title: "打车出发去青城后山", hint: "泰安古镇", note: ["目的地：泰安古镇（15km，驾车预计30分钟）"] },
+      {
+        time: "10:00", icon: "⛰️", title: "爬山", hint: "多档徒步路线，届时按大家情况调整",
+        note: [
+          { lbl: "可选路线", items: [
+            "爬到半山 + 坐索道下山：全程 5km，预计 2–3 小时",
+            "爬到半山 → 坐船 → 走下山：全程 7km，预计 3–4 小时",
+            "爬到半山 → 索道上山顶 → 从山顶走下山：全程 8.5km，预计 5–8 小时",
+            "爬到山顶走下山：全程 13km，预计 6–10 小时"
+          ]}
+        ]
+      },
+      {
+        time: "14:00", icon: "🥪", title: "午餐（路餐）", hint: "提前准备，找休息处用餐",
+        note: [
+          "我会提前给大家准备一些路餐，早上分发给大家",
+          "到时候找个休息的地方吃",
+          "最迟 14 点就要往山下走，索道 17 点停止运营"
+        ]
+      },
+      {
+        time: "18:00", icon: "🌶️", title: "晚餐", hint: "清溪小院·特色川菜",
+        note: [
+          "直接从泰安古镇打车去餐厅，或先回酒店修整再去（1.4km）",
+          "名称：清溪小院·特色川菜（青城山店）",
+          "地址：大三路397号"
+        ]
+      }
+    ]
+  },
+  {
+    day: "DAY 3", date: "11.07", week: "周六", desc: "都江堰 · 城市漫游",
+    icon: "🏙️",
+    acts: [
+      { time: "08:30", icon: "🥣", title: "吃早餐", hint: "酒店餐厅集合", note: ["酒店餐厅集合"] },
+      { time: "09:20", icon: "🚕", title: "打车出发去都江堰", hint: "都江堰市区", note: ["目的地：都江堰市区（15km，驾车预计30分钟）"] },
+      {
+        time: "10:00", icon: "🏞️", title: "玩都江堰", hint: "视天气情况安排",
+        note: [
+          { lbl: "上午可选", items: [
+            "都江堰景区",
+            "鲤鱼沱东站【都江堰雪山电车打卡点，看天气，有云雾就看不见雪山】",
+            "逛灌县古城【citywalk】",
+            "玉垒山公园 + 城隍庙"
+          ]}
+        ]
+      },
+      {
+        time: "12:00", icon: "🍲", title: "午饭", hint: "决赛圈选手已出 · 二选一",
+        note: [
+          { lbl: "第一家", items: ["名称：老味青城·腊排铜火锅（都江堰店）", "地址：文庙山街34号"] },
+          { lbl: "第二家", items: ["名称：太平张醪糟", "地址：建设路178号"] }
+        ]
+      },
+      {
+        time: "14:00", icon: "🍵", title: "喝茶躺平 或 吃甜品晒太阳", hint: "悠闲下午",
+        note: [
+          { lbl: "喝茶躺平", items: ["八角茶铺（在市区）", "萬水浅山瀑布茶社（在山里，打车过去约20分钟）"] },
+          { lbl: "甜品", items: ["（留白，随缘安排）"] }
+        ]
+      },
+      {
+        time: "18:00", icon: "🐟", title: "晚饭", hint: "决赛圈选手已出 · 二选一",
+        note: [
+          { lbl: "第一家", items: ["名称：杨盘堰渔重庆烤全鱼（建设路店）", "地址：灌口镇建设路252号"] },
+          { lbl: "第二家", items: ["名称：孙氏麻辣烫", "地址：玉府路青城桥村内"] }
+        ]
+      }
+    ]
+  },
+  {
+    day: "DAY 4", date: "11.08", week: "周日", desc: "返程 · 退房",
+    icon: "🧳",
+    acts: [
+      { time: "08:30", icon: "🥣", title: "吃早餐", hint: "酒店餐厅集合", note: [] },
+      { time: "09:20", icon: "🔑", title: "办理退房", hint: "结束行程", note: ["办理退房，返程"] }
+    ]
+  }
+];
+
+function noteItemHTML(n) {
+  if (typeof n === "string") {
+    return `<li>${escapeHtml(n)}</li>`;
+  }
+  if (n.lbl) {
+    return `<li><span class="lbl">${escapeHtml(n.lbl)}</span>
+      <ul class="note-list" style="margin-top:6px">${n.items.map(i => `<li class="sub">${escapeHtml(i)}</li>`).join("")}</ul>
+    </li>`;
+  }
+  return "";
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function render() {
+  const tl = document.getElementById("timeline");
+  tl.innerHTML = DATA.map(d => `
+    <div class="day" data-collapsed="false">
+      <div class="day-node">${d.icon}</div>
+      <div class="day-card">
+        <div class="day-head" data-toggle="day">
+          <div class="day-badge">${d.day}</div>
+          <div class="day-title">
+            <div class="date">${d.date}<span class="week">${d.week}</span></div>
+            <div class="desc">${d.desc}</div>
+          </div>
+          <div class="chevron">▾</div>
+        </div>
+        <div class="acts">
+          ${d.acts.map(a => `
+            <div class="act" data-open="false">
+              <div class="act-row" data-toggle="act">
+                <div class="act-time">${a.time}</div>
+                <div class="act-main">
+                  <div class="act-title"><span class="ic">${a.icon}</span>${a.title}</div>
+                  ${a.hint ? `<div class="act-hint">${a.hint}</div>` : ""}
+                </div>
+                <div class="act-arrow">▾</div>
+              </div>
+              <div class="act-detail">
+                <div class="act-detail-inner">
+                  ${a.note && a.note.length
+                    ? `<ul class="note-list">${a.note.map(noteItemHTML).join("")}</ul>`
+                    : ""}
+                </div>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    </div>
+  `).join("");
+}
+
+function toggle(el) {
+  const open = el.getAttribute("data-open") === "true";
+  el.setAttribute("data-open", String(!open));
+}
+
+function toggleDay(el) {
+  const day = el.closest(".day");
+  const collapsed = day.getAttribute("data-collapsed") === "true";
+  day.setAttribute("data-collapsed", String(!collapsed));
+}
+
+let allExpanded = false;
+document.getElementById("toggleAll").addEventListener("click", function () {
+  allExpanded = !allExpanded;
+  this.textContent = allExpanded ? "全部收起" : "全部展开";
+  document.querySelectorAll(".act").forEach(a => a.setAttribute("data-open", String(allExpanded)));
+});
+
+document.getElementById("timeline").addEventListener("click", function (e) {
+  const actRow = e.target.closest('[data-toggle="act"]');
+  if (actRow) { toggle(actRow.parentElement); return; }
+  const dayHead = e.target.closest('[data-toggle="day"]');
+  if (dayHead) { toggleDay(dayHead); }
+});
+
+render();
+</script>
+</body>
+</html>
